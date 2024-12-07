@@ -12,7 +12,7 @@ class AppsCreate(BaseModel):
 
 
 class AppsOut(AppsCreate):
-    id: str
+    id: int
     created_at: Optional[datetime] = None
 
     class Config:

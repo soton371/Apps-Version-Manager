@@ -3,6 +3,7 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
+    env_mood: str
     database_hostname: str 
     database_port: str 
     database_password: str
