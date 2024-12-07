@@ -4,20 +4,11 @@ from .custom_response import ResponseFailed
 
 from fastapi.middleware.cors import CORSMiddleware
 from .routers import apps
-import logging
-import logging.config
-from .config import settings
-from .logging_config import LOGGING_CONFIG
+from .logging_config import logger
 
 
 
-# Adjust logging levels based on environment
-if settings.env_mood == "production":
-    LOGGING_CONFIG["handlers"]["console"]["level"] = "WARNING"
-    LOGGING_CONFIG["loggers"]["app"]["level"] = "INFO"
 
-logging.config.dictConfig(LOGGING_CONFIG)
-logger = logging.getLogger("app")
 
 app = FastAPI()
 
@@ -42,7 +33,7 @@ app.include_router(apps.router)
 
 @app.on_event("startup")
 async def startup_event():
-    logger.info(f"Starting FastAPI application in {settings.env_mood} environment")
+    logger.info(f"Starting FastAPI application in environment")
 
 @app.get("/")
 async def root():

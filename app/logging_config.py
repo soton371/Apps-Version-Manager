@@ -1,6 +1,7 @@
 import logging
 import logging.config
 from pathlib import Path
+from .config import settings
 
 # Base directory for logs
 BASE_DIR = Path(__file__).resolve().parent
@@ -42,3 +43,17 @@ LOGGING_CONFIG = {
         },
     },
 }
+
+
+
+
+
+# Adjust logging levels based on environment
+if settings.env_mood == "production":
+    LOGGING_CONFIG["handlers"]["console"]["level"] = "WARNING"
+    LOGGING_CONFIG["loggers"]["app"]["level"] = "INFO"
+
+logging.config.dictConfig(LOGGING_CONFIG)
+logger = logging.getLogger("app")
+
+
