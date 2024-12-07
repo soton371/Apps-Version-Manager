@@ -29,4 +29,4 @@ async def create_apps(payload: schemas.AppsCreate, db: Session = Depends(get_db)
         return ResponseSuccess(message="A new app has been successfully added")
     except Exception as error:
         ic(error)
-        return ResponseFailed(message=error)
+        return ResponseFailed()
