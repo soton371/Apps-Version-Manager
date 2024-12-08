@@ -20,7 +20,7 @@ def create_app(payload: apps_schema.AppsCreate, db: Session):
 
 def get_all_apps(db: Session, limit: int = None, skip: int = 0,
                     search: Optional[str] = ''):
-    return db.query(apps_model.Apps).filter(apps_model.Apps.package_name.contains(search)).limit(limit).offset(skip).all()
+    return db.query(apps_model.Apps).filter(apps_model.Apps.package_name.contains(search.strip())).limit(limit).offset(skip).all()
 
 
 def delete_app(id: int, db: Session):
@@ -43,3 +43,9 @@ def update_app(id: int, payload: apps_schema.AppsCreate, db: Session):
     db.commit()
     return True
 
+
+def single_app(package_name: str, db: Session):
+    exist_app = db.query(apps_model.Apps).filter(
+        apps_model.Apps.package_name == package_name.strip()).first()
+    
+    return exist_app
