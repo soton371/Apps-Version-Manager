@@ -3,7 +3,7 @@ from fastapi import status, Depends, APIRouter
 from sqlalchemy.orm import Session
 from app.schemas import apps_schema
 from app.database import get_db
-from app.services.apps_service import create_app, get_all_apps, delete_app
+from app.services.apps_service import create_app, get_all_apps, delete_app, update_app
 from app.custom_response import ResponseFailed, ResponseSuccess
 from app.logging_config import logger
 
@@ -46,8 +46,22 @@ async def delete_apps(id: int, db: Session = Depends(get_db)):
     try:
         is_delete_app = delete_app(id=id, db=db)
         if is_delete_app:
-            return ResponseSuccess(message="An app was successfully deleted")
+            return ResponseSuccess(message="The app was successfully deleted")
         else:
-            return ResponseFailed(message=f"No app found with this id {id}")
+            return ResponseFailed(message=f"No app found with this id {id}", status_code=status.HTTP_404_NOT_FOUND)
     except Exception as error:
+        logger(f"delete_apps error: {error}")
+        return ResponseFailed()
+
+
+@router.put('/{id}')
+async def update_apps(id: int, payload: apps_schema.AppsCreate, db: Session = Depends(get_db)):
+    try:
+        is_update_app = update_app(id=id, payload=payload, db=db)
+        if is_update_app:
+            return ResponseSuccess(message="The app has been successfully updated")
+        else:
+            return ResponseFailed(status_code=status.HTTP_404_NOT_FOUND, message=f"No app found with this id {id}")
+    except Exception as error:
+        logger(f"update_apps error: {error}")
         return ResponseFailed()

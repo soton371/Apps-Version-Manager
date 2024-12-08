@@ -7,6 +7,7 @@ class AppsCreate(BaseModel):
     package_name: str
     play_store_version: Optional[str] = None
     app_store_version: Optional[str] = None
+    microsoft_store_version: Optional[str] = None
     force_update: Optional[bool] = False
     is_pause: Optional[bool] = False
 
