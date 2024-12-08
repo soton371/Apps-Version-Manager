@@ -4,7 +4,6 @@ from .custom_response import ResponseFailed
 
 from fastapi.middleware.cors import CORSMiddleware
 from .routers import apps
-from .logging_config import logger
 
 
 
@@ -31,11 +30,7 @@ async def custom_http_exception_handler(request: Request, exc: StarletteHTTPExce
 
 app.include_router(apps.router)
 
-@app.on_event("startup")
-async def startup_event():
-    logger.info(f"Starting FastAPI application in environment")
 
 @app.get("/")
 async def root():
-    logger.debug("Processing root endpoint")
     return {"message": "Hello World"}

@@ -20,7 +20,7 @@ async def create_apps(payload: apps_schema.AppsCreate, db: Session = Depends(get
                                 message=f"App with package name {payload.package_name} already exists")
         return ResponseSuccess(message="A new app has been successfully added")
     except Exception as error:
-        logger.debug(f"create_apps error: {error}")
+        logger(f"create_apps error: {error}")
         return ResponseFailed()
 
 @router.get('/')
@@ -30,8 +30,7 @@ async def all_apps(db: Session = Depends(get_db)):
         if not apps:
             return ResponseFailed(status_code=status.HTTP_404_NOT_FOUND, message="No apps yet")
         apps_data = [apps_schema.AppsOut.model_validate(app).model_dump() for app in apps]
-        logger.debug(f"apps_data: {apps_data}")
         return ResponseSuccess(data=apps_data)
     except Exception as error:
-        logger.debug(f"all_apps error: {error}")
+        logger(f"all_apps error: {error}")
         return ResponseFailed()
