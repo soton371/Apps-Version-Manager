@@ -1,3 +1,4 @@
+from typing import Optional
 from sqlalchemy.orm import Session
 from app.schemas import apps_schema
 from app.models import apps_model
@@ -16,5 +17,6 @@ def create_app(payload: apps_schema.AppsCreate, db: Session):
     db.refresh(new_app)
     return new_app
 
-def get_all_apps(db: Session):
-    return db.query(apps_model.Apps).all()
+def get_all_apps(db: Session, limit: int = None, skip: int = 0,
+                    search: Optional[str] = ''):
+    return db.query(apps_model.Apps).filter(apps_model.Apps.package_name.contains(search)).limit(limit).offset(skip).all()
