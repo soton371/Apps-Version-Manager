@@ -11,6 +11,7 @@ class Apps(Base):
     package_name = Column(String, nullable=False, unique=True)
     play_store_version = Column(String, nullable=True)
     app_store_version = Column(String, nullable=True)
+    microsoft_store_version = Column(String, nullable=True)
     force_update = Column(Boolean, nullable=True, server_default="FALSE")
     is_pause = Column(Boolean, nullable=True, server_default="FALSE")
     created_at = Column(TIMESTAMP(timezone=True), server_default=text('now()'))
