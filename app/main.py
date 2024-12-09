@@ -3,7 +3,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from .custom_response import ResponseFailed
 
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import apps
+from .routers import apps,auths
 
 
 
@@ -29,6 +29,7 @@ async def custom_http_exception_handler(request: Request, exc: StarletteHTTPExce
 
 
 app.include_router(apps.router)
+app.include_router(auths.router)
 
 
 @app.get("/")
