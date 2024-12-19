@@ -1,4 +1,3 @@
-from typing import Optional
 from sqlalchemy.orm import Session
 from app import utils
 from app.schemas import auth_schema
@@ -17,3 +16,5 @@ def create_user(payload: auth_schema.UserCreate, db: Session):
     db.commit()
     db.refresh(new_user)
     return new_user
+
+    
