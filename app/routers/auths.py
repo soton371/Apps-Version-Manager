@@ -35,7 +35,7 @@ async def login(payload: auth_schema.UserCreate, db: Session = Depends(get_db)):
         exist_user = db.query(auth_model.User).filter(
             auth_model.User.email == payload.email).first()
         if not exist_user:
-            return ResponseFailed(status_code=status.HTTP_404_NOT_FOUND, message=f'User with this {payload.email} email invalid')
+            return ResponseFailed(status_code=status.HTTP_404_NOT_FOUND, message=f'User with this {payload.email} invalid')
         verify = utils.verify(payload.password, exist_user.password)
         if not verify:
             return ResponseFailed(

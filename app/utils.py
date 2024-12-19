@@ -3,15 +3,12 @@ from random import random
 import string
 from passlib.context import CryptContext
 
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-pwd_context = CryptContext(schemes='bcrypt', deprecated='auto')
-
-
-def hashedPassword(password: str):
+def hashedPassword(password: str) -> str:
     return pwd_context.hash(password)
 
-
-def verify(plainPassword, hashedPassword):
+def verify(plainPassword: str, hashedPassword: str) -> bool:
     return pwd_context.verify(plainPassword, hashedPassword)
 
 
