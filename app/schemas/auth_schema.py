@@ -19,7 +19,7 @@ class UserCreate(BaseModel):
     
 class Token(BaseModel):
     access_token: str
-    token_type: str
+    token_type: Optional[str] = "Bearer"
 
 class TokenData(BaseModel):
     id: Optional[str] = None

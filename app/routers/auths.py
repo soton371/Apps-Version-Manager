@@ -42,7 +42,7 @@ async def login(payload: auth_schema.UserCreate, db: Session = Depends(get_db)):
                 status_code=status.HTTP_404_NOT_FOUND, message="Incorrect password")
         accessToken = oauth2.create_access_token(
             data={"user_id": exist_user.id})
-        data = {"access_token": accessToken, "token_type": "Bearer"}
+        data = auth_schema.Token(access_token=accessToken).model_dump()
         return ResponseSuccess(status_code=status.HTTP_200_OK, data=data)
     except Exception as error:
         logger(f"login error: {error}")
