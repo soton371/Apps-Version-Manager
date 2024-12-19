@@ -7,7 +7,7 @@ from app.custom_response import ResponseFailed, ResponseSuccess
 from app.logging_config import logger
 from app.services.auths_service import create_user
 from app.models import auth_model
-from app import utils
+from app import oauth2, utils
 
 
 router = APIRouter(
