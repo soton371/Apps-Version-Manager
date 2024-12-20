@@ -6,6 +6,7 @@ from app.database import get_db
 from app.services.apps_service import create_app, get_all_apps, delete_app, update_app, single_app
 from app.custom_response import ResponseFailed, ResponseSuccess
 from app.logging_config import logger
+from app.oauth2 import get_current_user
 
 router = APIRouter(
     prefix="/apps",
@@ -14,7 +15,7 @@ router = APIRouter(
 
 
 @router.post('/')
-async def create_apps(payload: apps_schema.AppsCreate, db: Session = Depends(get_db)):
+async def create_apps(payload: apps_schema.AppsCreate, db: Session = Depends(get_db), user_id: int = Depends(get_current_user)):
     try:
         app = create_app(payload, db)
         if not app:
@@ -42,7 +43,7 @@ async def all_apps(db: Session = Depends(get_db), limit: int = None, skip: int =
 
 
 @router.delete("/{id}")
-async def delete_apps(id: int, db: Session = Depends(get_db)):
+async def delete_apps(id: int, db: Session = Depends(get_db), user_id: int = Depends(get_current_user)):
     try:
         is_delete_app = delete_app(id=id, db=db)
         if is_delete_app:
@@ -55,7 +56,7 @@ async def delete_apps(id: int, db: Session = Depends(get_db)):
 
 
 @router.put('/{id}')
-async def update_apps(id: int, payload: apps_schema.AppsCreate, db: Session = Depends(get_db)):
+async def update_apps(id: int, payload: apps_schema.AppsCreate, db: Session = Depends(get_db), user_id: int = Depends(get_current_user)):
     try:
         is_update_app = update_app(id=id, payload=payload, db=db)
         if is_update_app:
