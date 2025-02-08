@@ -1,6 +1,6 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, status
 from starlette.exceptions import HTTPException as StarletteHTTPException
-
+from fastapi.exceptions import RequestValidationError
 from .core.custom_response import ResponseFailed
 
 from fastapi.middleware.cors import CORSMiddleware
@@ -20,7 +20,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    return ResponseFailed(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        message=exc.errors()[0]["msg"],
+    )
+    
 
 @app.exception_handler(StarletteHTTPException)
 async def custom_http_exception_handler(request: Request, exc: StarletteHTTPException):
@@ -45,3 +51,5 @@ async def root():
 #source .venv/bin/activate
 #uvicorn app.main:app --host 192.168.0.43 --port 8000 --reload
 #fastapi dev app/main.py
+
+
